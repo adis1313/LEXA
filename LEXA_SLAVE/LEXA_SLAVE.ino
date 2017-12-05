@@ -27,8 +27,6 @@ typedef struct //Telemetry values - 24 Bytes
 
 tTelemetryValues telemetryValues;
 
-byte telemetryValuesSize = sizeof(telemetryValues);
-
 void setup()
 {
   initSerial();
@@ -98,10 +96,10 @@ void sendTelemetryValues()
 {  
   tTelemetryValues telemetryValuesCopy = telemetryValues;
 
-  byte telemetryValuesArray[telemetryValuesSize]; 
-  memcpy(telemetryValuesArray, &telemetryValuesCopy, telemetryValuesSize); //Convert struct to byte array
+  byte telemetryValuesArray[sizeof(telemetryValuesCopy)]; 
+  memcpy(telemetryValuesArray, &telemetryValuesCopy, sizeof(telemetryValuesCopy)); //Convert struct to byte array
 
-  for(int i = 0; i < telemetryValuesSize; i++) {
+  for(int i = 0; i < sizeof(telemetryValues); i++) {
     Wire.write(telemetryValuesArray[i]);
 
 #if defined (TELEMETRY_ARRAY_DEBUG) && defined (DEBUG)

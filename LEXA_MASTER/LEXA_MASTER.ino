@@ -7,7 +7,6 @@
 #define SERIAL_SPEED          115200
 
 #define SLAVE_I2C_ADDRESS     8
-#define TELEMETRY_PIN         4
 
 typedef struct //Telemetry values - 24 Bytes
 {
@@ -25,9 +24,7 @@ typedef struct //Telemetry values - 24 Bytes
 
 tTelemetryValues telemetryValues;
 
-byte telemetryValuesSize = sizeof(telemetryValues);
-
-iBUStelemetry telemetry(TELEMETRY_PIN);
+iBUStelemetry telemetry(4);
 
 void setup() 
 {
@@ -74,11 +71,12 @@ void initTelemetry()
 void requestTelemetryValues() 
 {
   int i = 0;
+  byte telemetrySize = sizeof(telemetryValues);
   
-  byte telemetryValuesArray[telemetryValuesSize];
-  Wire.requestFrom(SLAVE_I2C_ADDRESS, telemetryValuesSize);
+  byte telemetryValuesArray[telemetrySize];
+  Wire.requestFrom(SLAVE_I2C_ADDRESS, telemetrySize);
 
-  while (Wire.available() && i < telemetryValuesSize){
+  while (Wire.available() && i < telemetrySize){
     telemetryValuesArray[i] = Wire.read();
     i++;
   }
